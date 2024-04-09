@@ -11,6 +11,7 @@ export const WebsocketClient = () => {
     socket.current.onopen = () => {
       setConnected(true);
       const user = {
+        type: "registration",
         username,
         email,
       };
@@ -34,7 +35,12 @@ export const WebsocketClient = () => {
           onChange={(e) => setUsername(e.target.value)}
           placeholder="Введіть ваше імʼя"
         />
-        <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Введіть ваш email" />
+        <input
+          type="text"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Введіть ваш email"
+        />
         <button
           onClick={() => {
             connection();

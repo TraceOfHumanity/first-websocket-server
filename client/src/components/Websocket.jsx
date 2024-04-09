@@ -1,6 +1,6 @@
+import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 
-import axios from "axios";
 export const WebSock = () => {
   const [messages, setMessages] = useState([]);
   const [value, setValue] = useState("");
@@ -62,7 +62,11 @@ export const WebSock = () => {
   return (
     <div>
       <div className="">
-        <input type="text" value={value} onChange={(e) => setValue(e.target.value)} />
+        <input
+          type="text"
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+        />
         <button onClick={sendMessage}>Надіслати</button>
       </div>
       <div className="">

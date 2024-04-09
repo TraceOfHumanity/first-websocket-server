@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 
+import { Button } from "ui-elements/Button";
 import { PopupWrapper } from "ui-elements/PopupWrapper";
 
 export const LoginPopup = () => {
@@ -28,7 +29,7 @@ export const LoginPopup = () => {
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Введіть ваш пароль"
         />
-        <button>Ввійти</button>
+        <Button>Ввійти</Button>
       </PopupWrapper>
     </div>
   );
