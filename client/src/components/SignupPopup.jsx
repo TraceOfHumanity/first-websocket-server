@@ -1,5 +1,12 @@
+import { auth } from "firebase.config";
+import {
+  GoogleAuthProvider,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+} from "firebase/auth";
 import { useAuth } from "hooks/useAuth";
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { Button } from "ui-elements/Button";
 import { PopupWrapper } from "ui-elements/PopupWrapper";
@@ -9,9 +16,26 @@ export const SignupPopup = () => {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const { signIn } = useAuth();
+  const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const handleSignup = () => {
-    signIn(username, email, password);
+  // const handleSignup = () => {
+  //   signIn(username, email, password);
+  // };
+
+  const provider = new GoogleAuthProvider();
+  const signInWithGoogle = () => {
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        const user = result.user;
+        signIn(user.displayName, user.email, user.uid);
+        navigate("/create-chat");
+        console.log(user);
+      })
+      .catch((error) => {
+        console.log(error);
+        setErrorMessage(error.message);
+      });
   };
 
   return (
@@ -39,15 +63,24 @@ export const SignupPopup = () => {
             placeholder="Введіть ваш пароль"
             autoComplete="current-password"
           />
+
           <Button
             onClick={(e) => {
               e.preventDefault();
-              handleSignup();
+              signInWithGoogle();
+            }}
+          >
+            уваійти з допомогою Google
+          </Button>
+          {/* <Button
+            onClick={(e) => {
+              e.preventDefault();
             }}
           >
             Зареєструватися
-          </Button>
+          </Button> */}
         </PopupWrapper>
+        {errorMessage && <div>{errorMessage}</div>}
       </form>
     </div>
   );

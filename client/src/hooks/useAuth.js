@@ -2,17 +2,18 @@ import { useRef } from "react";
 
 export const useAuth = () => {
   const socket = useRef();
-  const signIn = async ( username, email, password ) => {
+
+  const signIn = async (username, email, uid) => {
     socket.current = new WebSocket("ws://localhost:4444");
     socket.current.onopen = () => {
       const user = {
         type: "registration",
         username,
         email,
-        password,
+        uid,
       };
       socket.current.send(JSON.stringify(user));
-      console.log("підключення встановлено (реєстрація)");
+      console.log("підключення встановлено");
     };
     socket.current.onmessage = (event) => {
       const data = JSON.parse(event.data);
