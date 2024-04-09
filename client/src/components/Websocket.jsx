@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 
 import axios from "axios";
-export const Websocket = () => {
+export const WebSock = () => {
   const [messages, setMessages] = useState([]);
   const [value, setValue] = useState("");
   const socket = useRef();
