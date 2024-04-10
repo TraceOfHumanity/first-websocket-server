@@ -30,7 +30,7 @@ export const SignupPopup = () => {
         const user = result.user;
         signIn(user.displayName, user.email, user.uid);
         navigate("/create-chat");
-        console.log(user);
+        // console.log(user);
       })
       .catch((error) => {
         console.log(error);
