@@ -6,7 +6,7 @@ export const PopupWrapper = ({ children, className }) => {
   return (
     <div
       className={cn(
-        "flex flex-col gap-2 rounded-lg bg-gray-300 p-2",
+        "z-50 flex flex-col gap-2 rounded-lg bg-gray-300 p-2",
         className,
       )}
     >

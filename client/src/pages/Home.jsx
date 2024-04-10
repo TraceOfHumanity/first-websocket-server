@@ -1,20 +1,15 @@
 import React from "react";
-import { Link } from "react-router-dom";
-
-import { WebsocketClient } from "components/WebsocketClient";
-
-import { Button } from "ui-elements/Button";
+import { useSelector } from "react-redux";
 
 export const Home = () => {
+  const { isAuthenticated } = useSelector((state) => state.auth);
   return (
     <div>
-      {/* <WebsocketClient /> */}
-      <Link to="/login">
-        <Button>Login</Button>
-      </Link>
-      <Link to="/signup">
-        <Button>Signup</Button>
-      </Link>
+      {!isAuthenticated ? (
+        <p>ви не авторизовані, будь ласка, увійдіть в систему</p>
+      ) : (
+        <p>ви авторизовані</p>
+      )}
     </div>
   );
 };

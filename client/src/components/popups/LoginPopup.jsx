@@ -6,12 +6,17 @@ import {
 } from "firebase/auth";
 import { useAuth } from "hooks/useAuth";
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import { Button } from "ui-elements/Button";
+import { OpacityBg } from "ui-elements/OpacityBg";
 import { PopupWrapper } from "ui-elements/PopupWrapper";
 
-export const SignupPopup = () => {
+import { toggleLoginPopup } from "../../redux/slices/popupsSlice";
+
+export const LoginPopup = () => {
+  const dispatch = useDispatch();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
@@ -28,8 +33,7 @@ export const SignupPopup = () => {
     signInWithPopup(auth, provider)
       .then((result) => {
         const user = result.user;
-        signIn(user.displayName, user.email, user.uid);
-        navigate("/create-chat");
+        // signIn(user.displayName, user.email, user.uid);
         // console.log(user);
       })
       .catch((error) => {
@@ -39,7 +43,7 @@ export const SignupPopup = () => {
   };
 
   return (
-    <div>
+    <div className="">
       <form>
         <PopupWrapper className="fixed left-1/2 top-1/2 w-80 -translate-x-1/2 -translate-y-1/2 transform">
           <input
@@ -82,6 +86,7 @@ export const SignupPopup = () => {
         </PopupWrapper>
         {errorMessage && <div>{errorMessage}</div>}
       </form>
+      <OpacityBg onClick={() => dispatch(toggleLoginPopup())} />
     </div>
   );
 };
