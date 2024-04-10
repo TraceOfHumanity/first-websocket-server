@@ -1,33 +1,20 @@
 import { auth } from "firebase.config";
-import { GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
-import { useRef } from "react";
+import {
+  GoogleAuthProvider,
+  onAuthStateChanged,
+  signInWithPopup,
+  signOut,
+} from "firebase/auth";
 import { useDispatch } from "react-redux";
 
-import { removeActiveUser } from "../redux/slices/authSlice";
+import { removeActiveUser, setActiveUser } from "../redux/slices/authSlice";
 import { toggleLoginPopup } from "../redux/slices/popupsSlice";
+import { useConnectToDB } from "./useConnectToDB";
 
 export const useAuth = () => {
   const dispatch = useDispatch();
   const provider = new GoogleAuthProvider();
-  // const socket = useRef();
-
-  // const signIn = async (username, email, uid) => {
-  //   socket.current = new WebSocket("ws://localhost:4444");
-  //   socket.current.onopen = () => {
-  //     const user = {
-  //       type: "registration",
-  //       username,
-  //       email,
-  //       uid,
-  //     };
-  //     socket.current.send(JSON.stringify(user));
-  //     console.log("підключення встановлено");
-  //   };
-  //   socket.current.onmessage = (event) => {
-  //     const data = JSON.parse(event.data);
-  //     console.log(data);
-  //   };
-  // };
+  const { connectToDB } = useConnectToDB();
 
   const signInWithGoogle = () => {
     signInWithPopup(auth, provider)
@@ -51,5 +38,22 @@ export const useAuth = () => {
       });
   };
 
-  return { signInWithGoogle, logoutUser };
+  const checkAuth = () => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        dispatch(
+          setActiveUser({
+            uid: user.uid,
+            userName: user.displayName,
+            email: user.email,
+          }),
+        );
+        connectToDB(user.displayName, user.email, user.uid);
+      } else {
+        dispatch(removeActiveUser());
+      }
+    });
+  };
+
+  return { signInWithGoogle, logoutUser, checkAuth };
 };

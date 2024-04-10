@@ -34,11 +34,10 @@ mongoose
               });
               newUser.save();
 
-              const token = jwt.sign({ uid: newUser.uid }, process.env.JWT_SECRET, { expiresIn: "30d" });
               ws.send(
                 JSON.stringify({
                   type: "success",
-                  message: { newUser, token },
+                  message: "User registered successfully",
                 })
               );
             }
@@ -56,7 +55,6 @@ mongoose
   .catch((err) => {
     console.log("DB error", err);
   });
-
 
 // const ws = require("ws");
 
