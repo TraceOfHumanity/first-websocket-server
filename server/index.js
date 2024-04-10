@@ -15,36 +15,28 @@ mongoose
       console.log("Client connected");
       ws.on("message", async (message) => {
         message = JSON.parse(message);
-        switch (message.type) {
-          case "registration":
-            const user = await UserSchema.findOne({ email: message.email });
-            if (user) {
-              ws.send(
-                JSON.stringify({
-                  type: "error",
-                  message: "User with this email already exists",
-                })
-              );
-              return;
-            } else {
-              const newUser = new UserSchema({
-                username: message.username,
-                email: message.email,
-                uid: message.uid,
-              });
-              newUser.save();
+        const user = await UserSchema.findOne({ email: message.email });
 
-              ws.send(
-                JSON.stringify({
-                  type: "success",
-                  message: "User registered successfully",
-                })
-              );
-            }
-            break;
-          case "login":
-            console.log("Login:", message);
-            break;
+        if (!user) {
+          const newUser = new UserSchema({
+            username: message.username,
+            email: message.email,
+            uid: message.uid,
+          });
+          newUser.save();
+          ws.send(
+            JSON.stringify({
+              type: "success",
+              message: "User registered successfully",
+            })
+          );
+        } else {
+          ws.send(
+            JSON.stringify({
+              type: "success",
+              message: "User logged in successfully",
+            })
+          );
         }
       });
       ws.on("close", () => {

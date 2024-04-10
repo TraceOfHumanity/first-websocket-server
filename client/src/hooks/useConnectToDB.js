@@ -7,7 +7,6 @@ export const useConnectToDB = () => {
     socket.current = new WebSocket("ws://localhost:4444");
     socket.current.onopen = () => {
       const user = {
-        type: "registration",
         username,
         email,
         uid,
