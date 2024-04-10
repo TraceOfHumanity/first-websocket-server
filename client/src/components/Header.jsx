@@ -14,7 +14,14 @@ export const Header = () => {
   return (
     <div className="bg-gray-200 p-2">
       {activeUser ? (
-        <div className="flex justify-between">
+        <div className="flex gap-2">
+          {activeUser.image && (
+            <img
+              src={activeUser.image}
+              alt="user"
+              className="size-10 rounded-full"
+            />
+          )}
           <Button
             onClick={() => {
               logoutUser();
@@ -24,9 +31,7 @@ export const Header = () => {
           </Button>
         </div>
       ) : (
-        <div className="flex justify-between">
-          <Button onClick={() => dispatch(toggleLoginPopup())}>Login</Button>
-        </div>
+        <Button onClick={() => dispatch(toggleLoginPopup())}>Login</Button>
       )}
     </div>
   );

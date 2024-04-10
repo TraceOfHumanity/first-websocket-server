@@ -46,6 +46,7 @@ export const useAuth = () => {
             uid: user.uid,
             userName: user.displayName,
             email: user.email,
+            image: user.photoURL,
           }),
         );
         connectToDB(user.displayName, user.email, user.uid);
